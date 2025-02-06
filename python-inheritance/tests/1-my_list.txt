@@ -1,0 +1,8 @@
+#!/usr/bin/python3
+from 1-my_list import MyList  # Assurez-vous que le nom du fichier est correct, ici 1-my_list.py
+
+# Crée une instance de MyList
+my_list = MyList([1, 4, 2, 3, 5])
+
+# Appelle la méthode print_sorted
+my_list.print_sorted()
