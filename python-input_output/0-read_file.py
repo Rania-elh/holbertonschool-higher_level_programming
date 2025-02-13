@@ -1,10 +1,14 @@
 #!/usr/bin/python3
+"""
+This module contains the read_file function
+"""
+
 
 def read_file(filename=""):
-    # 1. Ouvrir le fichier en mode lecture ('r') en utilisant with
-    with open(filename, "r", encoding="utf-8") as file:
-        # 2. Lire le contenu du fichier
-        content = file.read()
-        
-        # 3. Afficher le contenu du fichier
-        print(content)
+    """""reads a text file(UTF8) and prints it to stdout
+
+    args:
+        filename: Name of the file read
+    """
+    with open(filename, "r", encoding="utf-8") as newfile:
+        print(newfile.read(), end="")
