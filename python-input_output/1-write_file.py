@@ -1,10 +1,9 @@
 #!/usr/bin/python3
+"""define function open write"""
 
-"""
-This module contains the write_file function
-"""
 
 def write_file(filename="", text=""):
-    """This function returns the number of Character written to filename"""
-    with open(filename, "w", encoding="utf-8") as file:
-        return file.write(text)
+    """write file function"""
+    with open(filename, "w", encoding="utf-8") as f:
+        write_file = f.write(text)
+        return write_file
