@@ -2,24 +2,36 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-@app.route('/api/hello', methods=['GET'])
-def hello_world():
-    return jsonify({"message": "Hello, World!"})
+users = {}
 
-@app.route('/api/data', methods=['POST'])
-def receive_data():
-    data = request.get_json()
-    return jsonify({"you_sent": data}), 201
+@app.route("/")
+def home():
+    return "Welcome to the Flask API!"
 
-@app.route('/api/update/<int:item_id>', methods=['PUT'])
-def update_item(item_id):
-    data = request.get_json()
-    return jsonify({"message": f"Item {item_id} updated with data: {data}"}), 200
+@app.route("/data")
+def get_data():
+    return jsonify(list(users.keys()))
 
-@app.route('/api/delete/<int:item_id>', methods=['DELETE'])
-def delete_item(item_id):
-    return jsonify({"message": f"Item {item_id} deleted"}), 200
+@app.route("/status")
+def status():
+    return "OK"
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@app.route("/users/<username>")
+def get_user(username):
+    user = users.get(username)
+    if user:
+        return jsonify(user)
+    else:
+        return jsonify({"error": "User not found"}), 404
 
+@app.route("/add_user", methods=["POST"])
+def add_user():
+    user_data = request.get_json()
+    username = user_data.get("username")
+    if not username:
+        return jsonify({"error": "Username is required"}), 400
+    users[username] = user_data
+    return jsonify({"message": "User added", "user": user_data}), 201
+
+if __name__ == "__main__":
+    app.run()

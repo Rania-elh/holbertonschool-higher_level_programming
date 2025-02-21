@@ -1,23 +1,34 @@
 import requests
+import csv
 
-def send_get_request():
-    url = "http://127.0.0.1:5000/api/hello"  # URL de l'API Flask
+def fetch_and_print_posts():
+    """
+    Fetches posts from JSONPlaceholder and prints the titles of all posts.
+    """
+    url = "https://jsonplaceholder.typicode.com/posts"
     response = requests.get(url)
+    print(f"Status Code: {response.status_code}")  # Print the status code
+
     if response.status_code == 200:
-        print("GET request success:", response.json())  # Affiche la réponse JSON du serveur
-    else:
-        print(f"GET request failed with status code {response.status_code}")
+        posts = response.json()
+        for post in posts:
+            print(post['title'])  # Print the title of each post
 
-def send_post_request():
-    url = "http://127.0.0.1:5000/api/data"
-    data = {"name": "Alice", "age": 25}  # Exemple de données envoyées
-    response = requests.post(url, json=data)
-    if response.status_code == 201:
-        print("POST request success:", response.json())
-    else:
-        print(f"POST request failed with status code {response.status_code}")
+def fetch_and_save_posts():
+    """
+    Fetches posts from JSONPlaceholder and saves selected data to a CSV file.
+    """
+    url = "https://jsonplaceholder.typicode.com/posts"
+    response = requests.get(url)
 
-if __name__ == '__main__':
-    send_get_request()
-    send_post_request()
+    if response.status_code == 200:
+        posts = response.json()
+        # Prepare data to be written to CSV
+        data_to_write = [{'id': post['id'], 'title': post['title'], 'body': post['body']} for post in posts]
+
+        # Writing to CSV
+        with open('posts.csv', 'w', newline='', encoding='utf-8') as file:
+            writer = csv.DictWriter(file, fieldnames=['id', 'title', 'body'])
+            writer.writeheader()
+            writer.writerows(data_to_write)
 
